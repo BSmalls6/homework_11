@@ -1,0 +1,25 @@
+{
+  "name": "homework_11",
+  "version": "1.0.0",
+  "description": "employee tracker",
+  "main": "server.js",
+  "scripts": {
+    "test": "start",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BSmalls6/homework_11.git"
+  },
+  "author": "me",
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "2.17.1",
+    "inquirer": "7.0.0",
+    "console-table": "0.1.2"
+  },
+  "bugs": {
+    "url": "https://github.com/BSmalls6/homework_11/issues"
+  },
+  "homepage": "https://github.com/BSmalls6/homework_11#readme"
+}

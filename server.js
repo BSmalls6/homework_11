@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-const DataAccess = require("./functions/DataAccess");
+// const DataAccess = require("./functions/DataAccess");
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -23,7 +23,7 @@ connection.connect(function (err) {
 });
 
 // Gets data from Database
-const dal = new DataAccess(connection);
+// const dal = new DataAccess(connection);
 
 function menu() {
     inquirer
@@ -31,7 +31,7 @@ function menu() {
             name: "menu",
             type: "list",
             message: "Would you like to do?",
-            choices: ["View All Employees","View Roles","View Departments", "View All Employees by Department", "View All Employees by Manager", "Add Employee","Add Department", "Add Role","Remove Employee", "Update Employee Role", "Update Manager"]
+            choices: ["View All Employees", "View Roles", "View Departments", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Add Department", "Add Role", "Remove Employee", "Update Employee Role", "Update Manager"]
         })
         .then(function (answer) {
             console.log(answer);
@@ -42,7 +42,7 @@ function menu() {
 function pickRoute(choice) {
     switch (choice.menu) {
         case "View All Employees":
-            dal.viewEmployees(menu);
+            viewEmployees();
             break;
         case "View All Employees by Department":
             employeeDepartments();
@@ -63,16 +63,16 @@ function pickRoute(choice) {
             updateManager();
             break;
         case "Add Department":
-                addDepartment();
-                break;
+            addDepartment();
+            break;
         case "Add Role":
-                addRole();
-                break;
+            addRole();
+            break;
         case "View Roles":
-                viewRoles();
-                break;
+            viewRoles();
+            break;
         case "View Departments":
-                viewDepartments();
+            viewDepartments();
     }
 }
 
@@ -127,14 +127,14 @@ function addDepartment() {
                 type: "input",
                 message: "What is the department you wish to add?"
             },
-           
+
         ])
         .then(function (answer) {
             connection.query(
                 "INSERT INTO departments SET ?",
                 {
                     department: answer.department_name,
-                    
+
                 },
                 function (err) {
                     if (err) throw err;
@@ -163,7 +163,7 @@ function addRole() {
                 type: "input",
                 message: "What is the department of the role?"
             },
-           
+
         ])
         .then(function (answer) {
             connection.query(
@@ -172,7 +172,7 @@ function addRole() {
                     title: answer.role_name,
                     salary: answer.role_salary,
                     department_id: answer.role_department
-                    
+
                 },
                 function (err) {
                     if (err) throw err;
@@ -245,14 +245,14 @@ function removeEmployee() {
         });
 }
 
-// function viewEmployees() {
-//     var query = "SELECT * FROM employees";
-//     connection.query(query, function (err, res) {
-//         if (err) throw (err);
-//         console.table(res)
-//         menu();
-//     });
-// };
+function viewEmployees() {
+    var query = "SELECT * FROM employees";
+    connection.query(query, function (err, res) {
+        if (err) throw (err);
+        console.table(res)
+        menu();
+    });
+};
 
 function viewRoles() {
     var query = "SELECT * FROM roles";

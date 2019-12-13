@@ -1,3 +1,5 @@
+// To get this to work - you need to separate the inquirer from the connection to DB, that call each other and pass the answers from server.js ansers
+
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 class DataAccess {

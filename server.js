@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+const DataAccess = require("./functions/DataAccess");
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -21,6 +22,9 @@ connection.connect(function (err) {
     menu();
 });
 
+// Gets data from Database
+const dal = new DataAccess(connection);
+
 function menu() {
     inquirer
         .prompt({
@@ -38,7 +42,7 @@ function menu() {
 function pickRoute(choice) {
     switch (choice.menu) {
         case "View All Employees":
-            viewEmployees();
+            dal.viewEmployees(menu);
             break;
         case "View All Employees by Department":
             employeeDepartments();
@@ -189,7 +193,7 @@ function employeeDepartments() {
             choices: ["Production", "Sales", "HR", "Operations"]
         })
         .then(function (answer) {   
-            var query = "SELECT first_name, last_name, role_id, manager_id FROM employees JOIN departments ON employees.department_id=departments.department WHERE department=?";
+            var query = "select * from employees inner join roles on employees.role_id=roles.id WHERE employees.role_id =?";
             connection.query(query, { department_id: answer.department }, function (err, res) {
                 if (err) throw err;
                 // for (var i = 0; i < res.length; i++) {
@@ -241,14 +245,14 @@ function removeEmployee() {
         });
 }
 
-function viewEmployees() {
-    var query = "SELECT * FROM employees";
-    connection.query(query, function (err, res) {
-        if (err) throw (err);
-        console.table(res)
-        menu();
-    });
-};
+// function viewEmployees() {
+//     var query = "SELECT * FROM employees";
+//     connection.query(query, function (err, res) {
+//         if (err) throw (err);
+//         console.table(res)
+//         menu();
+//     });
+// };
 
 function viewRoles() {
     var query = "SELECT * FROM roles";

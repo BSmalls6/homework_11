@@ -1,7 +1,17 @@
-SELECT title, domestic_sales, international_sales 
-FROM movies
-  JOIN boxoffice
-    ON movies.id = boxoffice.movie_id;
+const util = require("util");
+const mysql = require("mysql");
 
-    // This is for inner join where values from multiple tables need to have matching values:
-    // https://sqlbolt.com/lesson/select_queries_with_joins 
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "6starrating",
+  database: "employees"
+});
+
+connection.connect();
+
+// Setting up connection.query to use promises instead of callbacks
+// This allows us to use the async/await syntax
+connection.query = util.promisify(connection.query);
+
+module.exports = connection;
